@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class BlockBreak : MonoBehaviour
 {
-    public GameObject brickPrefab;
-    public GameObject questionBoxPrefab;
+    public TMP_Text Coins;
+    public TMP_Text Score;
+
+    private int pCoins = 00;
+    private int pScore = 000000;
     // Update is called once per frame
     void Update()
     {
@@ -22,12 +27,16 @@ public class BlockBreak : MonoBehaviour
 
                 if (boxCollider.tag == "Question")
                 {
+                    pCoins++;
+                    this.Coins.text = pCoins.ToString();
                     Debug.Log("question");
                     Destroy(boxCollider.gameObject);
                 }
 
                 if (boxCollider.tag == "Brick")
                 {
+                    pScore = pScore + 30;
+                    this.Score.text = pScore.ToString();
                     Debug.Log("brick");
                     Destroy(boxCollider.gameObject);
                 }

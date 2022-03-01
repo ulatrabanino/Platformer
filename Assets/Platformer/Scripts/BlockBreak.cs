@@ -11,6 +11,8 @@ public class BlockBreak : MonoBehaviour
 
     private int pCoins = 00;
     private int pScore = 000000;
+
+
     // Update is called once per frame
     void Update()
     {
@@ -28,6 +30,7 @@ public class BlockBreak : MonoBehaviour
                 if (boxCollider.tag == "Question")
                 {
                     pCoins++;
+                    pScore = pScore + 100;
                     this.Coins.text = pCoins.ToString();
                     Debug.Log("question");
                     Destroy(boxCollider.gameObject);
@@ -35,7 +38,7 @@ public class BlockBreak : MonoBehaviour
 
                 if (boxCollider.tag == "Brick")
                 {
-                    pScore = pScore + 30;
+                    pScore = pScore + 100;
                     this.Score.text = pScore.ToString();
                     Debug.Log("brick");
                     Destroy(boxCollider.gameObject);
@@ -44,4 +47,6 @@ public class BlockBreak : MonoBehaviour
             }
         }
     }
+
+
 }

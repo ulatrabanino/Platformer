@@ -5,10 +5,13 @@ using UnityEngine;
 public class LevelParser : MonoBehaviour
 {
     public string filename;
+    public string myLevel;
     public GameObject rockPrefab;
     public GameObject brickPrefab;
     public GameObject questionBoxPrefab;
     public GameObject stonePrefab;
+    public GameObject goombaPrefab;
+    public GameObject winnerPrefab;
     public Transform environmentRoot;
 
     // --------------------------------------------------------------------------
@@ -23,6 +26,15 @@ public class LevelParser : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             ReloadLevel();
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            ReloadLevel();
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            ReloadCustomLevel();
         }
     }
 
@@ -76,9 +88,91 @@ public class LevelParser : MonoBehaviour
                     var objectS = Instantiate(stonePrefab);
                     objectS.transform.position = new Vector3(column, row, 0f);
 
+                }else if(letter == 'g')
+                {
+                    var objectG = Instantiate(goombaPrefab);
+                    objectG.transform.position = new Vector3(column, row, 0f);
+                }else if(letter == 'p')
+                {
+                    var objectP = Instantiate(winnerPrefab);
+                    objectP.transform.position = new Vector3(column, row, 0f);
                 }
 
                 
+                // Todo - Instantiate a new GameObject that matches the type specified by letter
+                // Todo - Position the new GameObject at the appropriate location by using row and column
+                // Todo - Parent the new GameObject under levelRoot
+                column++;
+            }
+            row++;
+        }
+    }
+
+    private void LoadCustomLevel()
+    {
+        string fileToParse = $"{Application.dataPath}{"/Resources/"}{myLevel}.txt";
+        Debug.Log($"Loading level file: {fileToParse}");
+
+        Stack<string> levelRows = new Stack<string>();
+
+        // Get each line of text representing blocks in our level
+        using (StreamReader sr = new StreamReader(fileToParse))
+        {
+            string line = "";
+            while ((line = sr.ReadLine()) != null)
+            {
+                levelRows.Push(line);
+            }
+
+            sr.Close();
+        }
+
+        // Go through the rows from bottom to top
+        int row = 0;
+        while (levelRows.Count > 0)
+        {
+            string currentLine = levelRows.Pop();
+
+            int column = 0;
+            char[] letters = currentLine.ToCharArray();
+            foreach (var letter in letters)
+            {
+                if (letter == 'x')
+                {
+                    var testObject = Instantiate(rockPrefab);
+                    testObject.transform.position = new Vector3(column, row, 0f);
+
+                }
+                else if (letter == 'b')
+                {
+                    var objectB = Instantiate(brickPrefab);
+                    objectB.transform.position = new Vector3(column, row, 0f);
+
+                }
+                else if (letter == '?')
+                {
+                    var objectQ = Instantiate(questionBoxPrefab);
+                    objectQ.transform.position = new Vector3(column, row, 0f);
+
+                }
+                else if (letter == 's')
+                {
+                    var objectS = Instantiate(stonePrefab);
+                    objectS.transform.position = new Vector3(column, row, 0f);
+
+                }
+                else if (letter == 'g')
+                {
+                    var objectG = Instantiate(goombaPrefab);
+                    objectG.transform.position = new Vector3(column, row, 0f);
+                }
+                else if (letter == 'p')
+                {
+                    var objectP = Instantiate(winnerPrefab);
+                    objectP.transform.position = new Vector3(column, row, 0f);
+                }
+
+
                 // Todo - Instantiate a new GameObject that matches the type specified by letter
                 // Todo - Position the new GameObject at the appropriate location by using row and column
                 // Todo - Parent the new GameObject under levelRoot
@@ -96,5 +190,14 @@ public class LevelParser : MonoBehaviour
            Destroy(child.gameObject);
         }
         LoadLevel();
+    }
+
+    private void ReloadCustomLevel()
+    {
+        foreach (Transform child in environmentRoot)
+        {
+            Destroy(child.gameObject);
+        }
+        LoadCustomLevel();
     }
 }

@@ -6,9 +6,10 @@ using TMPro;
 public class Timer : MonoBehaviour
 {
     float currentTime = 0;
-    float startingTime = 400;
+    float startingTime = 100;
 
     public TMP_Text countdown;
+    public TMP_Text msg;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +26,7 @@ public class Timer : MonoBehaviour
         if (currentTime <= 0)
         {
             Debug.Log("Times up!");
+            this.msg.text = "You lost!";
             currentTime = 0;
         }
 
